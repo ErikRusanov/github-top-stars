@@ -21,7 +21,7 @@ class RepositoriesService(BaseService):
         CREATE INDEX IF NOT EXISTS idx_{table_name}_owner_repo ON {table_name} (owner, repo);
     """
 
-    async def get_top_repos_by_stars(self, sort: RepositorySort = None):
+    async def get_top_repos_by_stars(self, sort: RepositorySort = None) -> list[dict]:
         query = f"""
             SELECT * FROM (
                 SELECT * FROM {self.table_name}

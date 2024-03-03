@@ -1,3 +1,6 @@
+import sys
+import traceback
+
 from fastapi import FastAPI, Request
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
@@ -38,7 +41,7 @@ def get_application() -> FastAPI:
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={
-                "exception": str(e),
+                "exception": f"{type(e).__name__}: {e}",
             }
         )
 

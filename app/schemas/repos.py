@@ -16,13 +16,13 @@ class RepositorySort(Enum):
 
 
 class _RepositoryBase(BaseModel):
-    position_cur: str
-    position_prev: str
-    stars: int
-    watchers: int
-    forks: int
-    open_issues: int
-    language: str
+    position_cur: int | str
+    position_prev: int | str
+    stars: int | str
+    watchers: int | str
+    forks: int | str
+    open_issues: int | str
+    language: str | None
 
 
 class Repository(_RepositoryBase):

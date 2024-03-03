@@ -11,9 +11,16 @@ repos_router = APIRouter(
 
 
 @repos_router.get(
-    path="top100",
+    path="/top100",
     status_code=status.HTTP_200_OK,
     response_model=list[repos.Repository]
 )
-async def get_top_repos(sort: repos.RepositorySort = None):
-    return await repos_service.get_top_repos_by_stars(sort)
+async def get_top_repos(
+        sort: repos.RepositorySort = None,
+        sort_desc: bool = True,
+):
+    # await repos_service.update_top_repos()
+    return [
+        repos.Repository(**item)
+        for item in await repos_service.get_top_repos_by_stars(sort, sort_desc)
+    ]

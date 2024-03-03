@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
@@ -32,7 +33,14 @@ def get_application() -> FastAPI:
 
     @_app.exception_handler(Exception)
     def _app_exception_handler(request: Request, e: Exception) -> JSONResponse:
-        pass
+        # Some extra handler logic
+
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={
+                "exception": str(e),
+            }
+        )
 
     _app.include_router(api_router)
     return _app

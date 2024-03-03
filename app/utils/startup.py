@@ -1,5 +1,5 @@
 from app.services.base import BaseService
-from .logging_config import logger
+from app.core.logging_config import logger
 
 
 async def create_tables(services: list[BaseService]) -> None:

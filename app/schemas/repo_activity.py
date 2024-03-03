@@ -1,20 +1,20 @@
-from datetime import datetime, date
+from datetime import date
 
 from pydantic import BaseModel
 
 
-class RepoActivityBase(BaseModel):
+class _RepoActivityBase(BaseModel):
     commits: int
     authors: list[str]
 
 
-class RepoActivity(RepoActivityBase):
+class RepoActivity(_RepoActivityBase):
     date: date
 
 
-class RepoActivityCreate(RepoActivityBase):
+class RepoActivityCreate(_RepoActivityBase):
     date: date
 
 
-class RepoActivityUpdate(RepoActivityBase):
+class RepoActivityUpdate(_RepoActivityBase):
     pass

@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query
 from starlette import status
 
-from app.schemas.repo_activity import RepoActivity
+from app.schemas import repo_activity
 from app.services import repo_activity_service
 
 repo_activity_router = APIRouter(
@@ -16,7 +16,7 @@ repo_activity_router = APIRouter(
 @repo_activity_router.get(
     path="/{owner}/{repo}/activity",
     status_code=status.HTTP_200_OK,
-    response_model=list[RepoActivity]
+    response_model=list[repo_activity.RepoActivity]
 )
 async def get_activity(
         owner: str,

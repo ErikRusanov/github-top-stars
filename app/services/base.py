@@ -4,7 +4,7 @@ from typing import Any
 import asyncpg
 from asyncpg import Pool, Connection
 
-from app.core.config import settings
+from app.core import settings
 
 
 class BaseService(ABC):

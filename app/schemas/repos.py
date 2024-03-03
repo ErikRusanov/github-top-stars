@@ -15,7 +15,7 @@ class RepositorySort(Enum):
     owner: str = "owner"
 
 
-class RepositoryBase(BaseModel):
+class _RepositoryBase(BaseModel):
     position_cur: str
     position_prev: str
     stars: int
@@ -25,15 +25,15 @@ class RepositoryBase(BaseModel):
     language: str
 
 
-class Repository(RepositoryBase):
+class Repository(_RepositoryBase):
     repo: str
     owner: str
 
 
-class RepositoryCreate(RepositoryBase):
+class RepositoryCreate(_RepositoryBase):
     repo: str
     owner: str
 
 
-class RepositoryUpdate(RepositoryBase):
+class RepositoryUpdate(_RepositoryBase):
     pass

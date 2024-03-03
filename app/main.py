@@ -1,3 +1,3 @@
-from app.core.get_app import get_application
+from app.core import get_application
 
 app = get_application()

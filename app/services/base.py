@@ -8,6 +8,7 @@ from app.core.config import settings
 
 
 class BaseService(ABC):
+    table_name: str = ...
     _initial_query: str = ...
 
     def __init__(self):

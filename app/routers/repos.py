@@ -19,8 +19,11 @@ async def get_top_repos(
         sort: repos.RepositorySort = None,
         sort_desc: bool = True,
 ):
-    # await repos_service.update_top_repos()
-    return [
-        repos.Repository(**item)
-        for item in await repos_service.get_top_repos_by_stars(sort, sort_desc)
-    ]
+    return await repos_service.get_top_repos_by_stars(sort, sort_desc)
+
+
+@repos_router.get(
+    path="/tmp"
+)
+async def update_top_repos():
+    await repos_service.update_top_repos()

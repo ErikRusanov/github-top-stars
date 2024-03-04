@@ -1,33 +1,43 @@
 import requests
+from requests import RequestException
 
+from app.core.logging_config import logger
 from app.schemas import repos
 
 
-def parse_repos_top() -> list[repos.RepositoryCreate]:
-    resp = requests.get(
-        headers={
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28"
-        },
-        url="https://api.github.com/search/repositories",
-        params={
-            "sort": "stars",
-            "q": "stars:>0",
-            "per_page": 100
-        }
-    )
+def parse_repos_top() -> list[repos.Repository]:
+    url = "https://api.github.com/search/repositories"
 
-    return [
-        repos.RepositoryCreate(
-            repo=str(item.get("full_name")),
-            owner=str(item.get("owner").get("login")),
-            forks=str(item.get("forks")),
-            watchers=str(item.get("watchers")),
-            open_issues=str(item.get("open_issues")),
-            language=str(item.get("language", None)),
-            position_prev=str(0),
-            position_cur=str(i),
-            stars=str(item.get("stargazers_count"))
+    try:
+        resp = requests.get(
+            headers={
+                "Accept": "application/vnd.github+json",
+                "X-GitHub-Api-Version": "2022-11-28"
+            },
+            url=url,
+            params={
+                "sort": "stars",
+                "q": "stars:>0",
+                "per_page": 100
+            }
         )
-        for i, item in enumerate(resp.json().get("items"))
-    ]
+
+        return [
+            repos.Repository(
+                repo=(repo := item.get("full_name")),
+                owner=(owner := item.get("owner").get("login")),
+                forks=item.get("forks"),
+                watchers=item.get("watchers"),
+                open_issues=item.get("open_issues"),
+                language=item.get("language", None),
+                position_prev=None,
+                stars=item.get("stargazers_count"),
+                position_cur=0,
+            )
+            for i, item in enumerate(resp.json().get("items"))
+        ]
+
+    except RequestException as e:
+        logger.error(f"Can't parse data from {url}. Error: {e}")
+
+    return list()

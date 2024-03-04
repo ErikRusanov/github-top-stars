@@ -16,12 +16,12 @@ class RepositorySort(Enum):
 
 
 class _RepositoryBase(BaseModel):
-    position_cur: int | str
-    position_prev: int | str
-    stars: int | str
-    watchers: int | str
-    forks: int | str
-    open_issues: int | str
+    position_cur: int
+    position_prev: int | None
+    stars: int
+    watchers: int
+    forks: int
+    open_issues: int
     language: str | None
 
 
@@ -30,10 +30,13 @@ class Repository(_RepositoryBase):
     owner: str
 
 
-class RepositoryCreate(_RepositoryBase):
+class RepositoryCU(BaseModel):
+    position_cur: str
+    position_prev: str
+    stars: str
+    watchers: str
+    forks: str
+    open_issues: str
+    language: str
     repo: str
     owner: str
-
-
-class RepositoryUpdate(_RepositoryBase):
-    pass

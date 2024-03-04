@@ -1,6 +1,3 @@
-import sys
-import traceback
-
 from fastapi import FastAPI, Request
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
@@ -33,6 +30,7 @@ def get_application() -> FastAPI:
             await service.create_table()
 
         logger.info("Database is ready for use")
+        await repos_service.init_top_repos_on_startup()
 
     @_app.exception_handler(Exception)
     def _app_exception_handler(request: Request, e: Exception) -> JSONResponse:

@@ -12,9 +12,7 @@ class RepoActivity(_RepoActivityBase):
     date: date
 
 
-class RepoActivityCreate(_RepoActivityBase):
-    date: date
-
-
-class RepoActivityUpdate(_RepoActivityBase):
-    pass
+class RepoActivityCU(BaseModel):
+    date: str
+    commits: str
+    authors: str

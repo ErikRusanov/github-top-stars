@@ -2,6 +2,7 @@ from datetime import date
 
 from app.services.base import BaseService
 from .repos import RepositoriesService
+from ..utils.parsers import parse_activity
 
 
 class RepositoryActivityService(BaseService):
@@ -27,6 +28,9 @@ class RepositoryActivityService(BaseService):
         if until < since:
             return list()
 
+        if (until - since).days > 365:
+            raise ValueError
+
         query = f"""
             SELECT * FROM {self.table_name}
             WHERE date >= '{since}' AND date <= '{until}' AND repository_id = (
@@ -35,4 +39,9 @@ class RepositoryActivityService(BaseService):
             );
         """
 
-        return await self.execute(query, fetch=True)
+        return await self.execute(query, fetch=True) or await self.add_repo_activity(owner, repo, since, until)
+
+    async def add_repo_activity(self, owner: str, repo: str, since: date, until: date) -> list:
+        repo_name = repo.split("/")[-1]
+        parse_activity(repo_name, owner, 2, (until - since).days)
+        return list()

@@ -5,6 +5,7 @@ import asyncpg
 from asyncpg import Pool, Connection
 
 from app.core import settings
+from app.core.logging_config import logger
 
 
 class BaseService(ABC):
@@ -23,13 +24,16 @@ class BaseService(ABC):
             *args,
             fetch: bool = False
     ) -> Any:
-        async with self._pool.acquire() as conn:
-            conn: Connection
-            async with conn.transaction():
-                if fetch:
-                    return await conn.fetch(query, *args)
-                else:
-                    return await conn.execute(query, *args)
+        try:
+            async with self._pool.acquire() as conn:
+                conn: Connection
+                async with conn.transaction():
+                    if fetch:
+                        return await conn.fetch(query, *args)
+                    else:
+                        return await conn.execute(query, *args)
+        except Exception as e:
+            logger.error(f"Can't execute query:\n{query}\n\nError: {e}")
 
     async def create_table(self) -> None:
         await self._create_pool()

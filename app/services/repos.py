@@ -1,6 +1,5 @@
 import asyncio
 
-from app.core.logging_config import logger
 from app.schemas import repos
 from app.schemas.repos import RepositorySort
 from app.services.base import BaseService
@@ -92,11 +91,7 @@ class RepositoriesService(BaseService):
         values = [self._format_repo(repo) for repo in repos_to_push]
         query = self._insert_many_query(values)
 
-        try:
-            await self.execute(query)
-            logger.info("Repositories fetched from github.com and pushed to db")
-        except Exception as e:
-            logger.error(f"Can't push repositories to database. Error: {e}")
+        await self.execute(query)
 
     @staticmethod
     def _repos_different(old_repo: repos.Repository, cur_repo: repos.RepositoryCU) -> bool:
@@ -151,7 +146,4 @@ class RepositoriesService(BaseService):
             if query:
                 tasks.append(self.execute(query))
 
-        try:
-            await asyncio.gather(*tasks)
-        except Exception as e:
-            logger.error(f"Can't push some updates into db. Error: {e}")
+        await asyncio.gather(*tasks)

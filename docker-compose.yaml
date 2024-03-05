@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  db:
+    image: "postgres"
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: default
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+    container_name: "github-top-stars_db"
+
   app:
     build:
       context: .
@@ -10,15 +20,3 @@ services:
     depends_on:
       - db
     container_name: "github-top-stars_app"
-    environment:
-      PSQL_URL: "postgresql+asyncpg://admin:1234@github-top-stars_db:5433/default"
-
-  db:
-    image: "postgres"
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_DB: default
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 1234
-    container_name: "github-top-stars_db"

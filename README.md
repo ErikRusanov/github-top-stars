@@ -26,7 +26,7 @@ cd github-top-stars
 Create a .env file in the project root with the following content:
 
 ```ini
-PSQL_URL = "postgresql://admin:1234@localhost:5433/default"
+PSQL_URL = "postgresql://admin:1234@db:5432/default"
 TOKEN = "token_from_github"
 ```
 

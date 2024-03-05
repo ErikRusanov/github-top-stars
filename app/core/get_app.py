@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Request
-from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
@@ -8,11 +7,12 @@ from app.routers import api_router
 from app.services.repo_activity import repo_activity_service
 from app.services.repos import repos_service
 from app.utils.scheduler import configure_scheduler
+from .exceptions import handle_exception
 from .logging_config import logger
 
 
 def get_application() -> FastAPI:
-    _app = FastAPI(title="Github Top Repositories")
+    _app = FastAPI(title="Github top repositories")
 
     _app.add_middleware(
         CORSMiddleware,
@@ -36,14 +36,7 @@ def get_application() -> FastAPI:
 
     @_app.exception_handler(Exception)
     def _app_exception_handler(request: Request, e: Exception) -> JSONResponse:
-        # Some extra handler logic
-
-        return JSONResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content={
-                "exception": f"{type(e).__name__}: {e}",
-            }
-        )
+        return handle_exception(request, e)
 
     _app.include_router(api_router)
 

@@ -5,6 +5,7 @@ import requests
 from requests import RequestException
 
 from app.core import settings
+from app.core.exceptions import RateLimitExceeded
 from app.core.logging_config import logger
 from app.schemas import repos, repo_activity
 
@@ -20,6 +21,10 @@ def _send_request(url: str, params: dict) -> tuple[dict, str | None]:
             url=url,
             params=params
         )
+
+        data = resp.json()
+        if isinstance(data, dict) and "API rate limit exceeded" in data.get("msg"):
+            raise RateLimitExceeded
 
         return resp.json(), resp.headers.get("Link", None)
     except RequestException as e:
@@ -72,7 +77,6 @@ def parse_activity(
         )
         if not isinstance(tmp_data, list):
             break
-        print(url, len(tmp_data))
 
         if latest_date and datetime.strptime(tmp_data[0].get("timestamp"), "%Y-%m-%dT%H:%M:%SZ").date() <= latest_date:
             break

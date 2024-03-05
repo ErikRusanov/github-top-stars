@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from starlette import status
 
 from app.schemas import repos
@@ -13,10 +13,21 @@ repos_router = APIRouter(
 @repos_router.get(
     path="/top100",
     status_code=status.HTTP_200_OK,
-    response_model=list[repos.Repository]
+    response_model=list[repos.Repository],
+    summary="Get Top 100 Repositories",
+    description="Retrieve the top 100 repositories based on the specified sorting criteria.",
+    response_description="List of Repository objects representing the top repositories.",
 )
 async def get_top_repos(
-        sort: repos.RepositorySort = None,
-        sort_desc: bool = True,
+        sort: repos.RepositorySort = Query(None, description="Sorting criteria for the repositories."),
+        sort_desc: bool = Query(True, description="Flag to indicate descending order if True."),
 ):
+    """
+    Retrieve the top 100 repositories based on the specified sorting criteria.
+
+    :param sort: Sorting criteria for the repositories (optional).
+    :param sort_desc: Flag to indicate descending order if True (default is True).
+    :return: List of Repository objects representing the top repositories.
+    """
+
     return await repos_service.get_top_repos_by_stars(sort, sort_desc)

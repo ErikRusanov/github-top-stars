@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: "postgres"
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: default
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+    container_name: "github-top-stars_db"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    container_name: "github-top-stars_app"

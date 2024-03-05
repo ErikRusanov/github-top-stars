@@ -14,7 +14,7 @@ repos_router = APIRouter(
     path="/top100",
     status_code=status.HTTP_200_OK,
     response_model=list[repos.Repository],
-    summary="Get Top 100 Repositories",
+    summary="Get top 100 repositories",
     description="Retrieve the top 100 repositories based on the specified sorting criteria.",
     response_description="List of Repository objects representing the top repositories.",
 )

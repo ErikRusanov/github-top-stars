@@ -84,9 +84,6 @@ class GHParser:
         :return: The next URL if conditions are met, otherwise None.
         """
 
-        if not isinstance(data, list):
-            return
-
         if latest_date and self._convert_date(data[0]) <= latest_date:
             return
 
@@ -114,7 +111,12 @@ class GHParser:
                 url=url,
                 params=self._list_repo_activity_params,
             )
-            if url := self._next_url(data, link, latest_date) is None:
+
+            if not isinstance(data, list):
+                break
+            items.extend(data)
+
+            if (url := self._next_url(data, link, latest_date)) is None:
                 break
 
         return [

@@ -5,11 +5,20 @@ from app.services.repos import repos_service
 
 
 def configure_scheduler():
-    scheduler = AsyncIOScheduler()
-    # In top repositories, the number of stars, views, forks, etc. can change quite quickly, so a frequency of 5
-    # minutes, in my opinion, is optimal. Subject to authorized requests with a limit of 5000 requests per hour,
-    # this will not greatly limit the possibilities for parsing activities
+    """
+    Configures and returns an AsyncIOScheduler with a cron job to update top repositories.
 
+    This scheduler is designed to run the update_top_repos function at regular intervals, allowing
+    for timely updates of top repositories based on star, view, fork, etc. counts.
+
+    The chosen frequency is set to every 5 minutes, providing a balance between quick updates and
+    complying with authorized requests with a limit of 5000 requests per hour.
+
+    :return: Configured AsyncIOScheduler instance.
+    """
+    scheduler = AsyncIOScheduler()
+
+    # Setting up cron jobs for each 5-minute interval within a 24-hour period
     for hour in range(0, 24):
         for minute in range(0, 60, 5):
             trigger = CronTrigger(hour=hour, minute=minute)

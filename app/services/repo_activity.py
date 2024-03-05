@@ -134,7 +134,9 @@ class RepositoryActivityService(BaseService):
         latest_date_query = self._latest_date_query(repository.id)
         latest_date = (await self.execute(latest_date_query, fetch=True))[0][0]
 
-        await self.add_repo_activity(owner, repo, repository.id, latest_date if latest_date <= until else None)
+        await self.add_repo_activity(
+            owner, repo, repository.id, latest_date if latest_date and latest_date <= until else None
+        )
         return repository
 
     async def get_repo_activity(

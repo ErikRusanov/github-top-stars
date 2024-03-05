@@ -3,6 +3,14 @@ import sys
 
 
 def get_logger(level: int = logging.DEBUG, turn_off_another_logs: bool = False):
+    """
+    Configures and returns a custom logger with colored output.
+
+    :param level: Logging level for the logger (default is logging.DEBUG).
+    :param turn_off_another_logs: If True, turns off logging for all other loggers (default is False).
+    :return: Configured logger instance.
+    """
+
     class ColoredFormatter(logging.Formatter):
         green = "\033[92m"
         blue = "\033[94m"

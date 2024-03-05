@@ -12,6 +12,12 @@ from .logging_config import logger
 
 
 def get_application() -> FastAPI:
+    """
+    Creates and configures the FastAPI application.
+
+    :return: The configured FastAPI application instance.
+    """
+
     _app = FastAPI(title="Github top repositories")
 
     _app.add_middleware(
@@ -24,6 +30,10 @@ def get_application() -> FastAPI:
 
     @_app.on_event("startup")
     async def on_startup():
+        """
+        Initializes services on application startup.
+        """
+
         services = [
             repos_service,
             repo_activity_service
@@ -36,6 +46,14 @@ def get_application() -> FastAPI:
 
     @_app.exception_handler(Exception)
     def _app_exception_handler(request: Request, e: Exception) -> JSONResponse:
+        """
+        Exception handler for the entire application.
+
+        :param request: The FastAPI Request object.
+        :param e: The exception object.
+        :return: JSONResponse containing the error message and status code.
+        """
+
         return handle_exception(request, e)
 
     _app.include_router(api_router)

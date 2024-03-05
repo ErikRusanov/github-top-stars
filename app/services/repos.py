@@ -8,34 +8,51 @@ from app.utils.ghp import github_parser
 
 
 class RepositoriesService(BaseService):
-    table_name = "repositories"
-    schemaCU = repos.RepositoryCU
-    _initial_query = f"""
-        CREATE TABLE IF NOT EXISTS {table_name} (
-            id SERIAL PRIMARY KEY,
-            repo VARCHAR NOT NULL,
-            owner VARCHAR NOT NULL,
-            position_cur INTEGER DEFAULT null,
-            position_prev INTEGER DEFAULT null,
-            stars INTEGER DEFAULT null,          
-            watchers INTEGER DEFAULT null,
-            forks INTEGER DEFAULT null,           
-            open_issues INTEGER DEFAULT null,
-            language VARCHAR DEFAULT null,
-            UNIQUE (owner, repo)
-        );
-        CREATE INDEX IF NOT EXISTS idx_{table_name}_owner_repo ON {table_name} (owner, repo);
+    """
+    Service for handling repositories.
     """
 
-    async def get_top_repos_by_stars(
+    table_name = "repositories"
+    schemaCU = repos.RepositoryCU
+
+    def __init__(self):
+        super().__init__()
+        self._initial_query = f"""
+            CREATE TABLE IF NOT EXISTS {self.table_name} (
+                id SERIAL PRIMARY KEY,
+                repo VARCHAR NOT NULL,
+                owner VARCHAR NOT NULL,
+                position_cur INTEGER DEFAULT null,
+                position_prev INTEGER DEFAULT null,
+                stars INTEGER DEFAULT null,          
+                watchers INTEGER DEFAULT null,
+                forks INTEGER DEFAULT null,           
+                open_issues INTEGER DEFAULT null,
+                language VARCHAR DEFAULT null,
+                UNIQUE (owner, repo)
+            );
+            CREATE INDEX IF NOT EXISTS idx_{self.table_name}_owner_repo ON {self.table_name} (owner, repo);
+        """
+
+    def _select_top_repos_query(
             self,
             sort: RepositorySort = None,
             sort_desc: bool = True,
             limit: int | None = 100
-    ) -> list[repos.Repository]:
+    ) -> str:
+        """
+        Generate SQL query for selecting top repositories by stars.
+
+        :param sort: Sorting field.
+        :param sort_desc: Sort in descending order.
+        :param limit: Maximum number of repositories to retrieve.
+        :return: SQL query.
+        """
+
         order_by = f"{sort.value if sort else RepositorySort.stars.value} {'DESC' if sort_desc else 'ASC'}"
         limit_cond = f"LIMIT {limit}" if limit else ""
-        query = f"""
+
+        return f"""
             SELECT * FROM (
                 SELECT * FROM {self.table_name}
                 WHERE position_cur IS NOT null AND stars IS NOT null
@@ -45,13 +62,49 @@ class RepositoriesService(BaseService):
             ORDER BY {order_by};
         """
 
-        return [
-            repos.Repository(**item)
-            for item in await self.execute(query, fetch=True)
-        ]
+    def _select_query(self, repo: str, owner: str) -> str:
+        """
+        Generate SQL query for selecting a repository by repo and owner.
+
+        :param repo: Repository name.
+        :param owner: Owner name.
+        :return: SQL query.
+        """
+
+        return f"""
+            SELECT * FROM {self.table_name}
+            WHERE repo = '{repo}' AND owner = '{owner}'
+        """
+
+    def _update_query(self, repo: repos.RepositoryCU) -> str:
+        """
+        Generate an update query for a repository.
+
+        :param repo: Repository to be updated.
+        :return: Update query.
+        """
+
+        return f"""
+            UPDATE {self.table_name} SET {(
+            ", ".join(
+                [
+                    f"{col} = {value}"
+                    for col, value in zip(repos.RepositoryCU.model_fields.keys(), repo.model_dump().values())
+                ]
+            )
+        )}
+            WHERE repo = {repo.repo} AND owner = {repo.owner}
+        """
 
     @staticmethod
     def _prepare_before_pushing(repos_list: list[repos.Repository]) -> list[repos.RepositoryCU]:
+        """
+        Prepare repositories before pushing.
+
+        :param repos_list: List of repositories.
+        :return: List of prepared repositories.
+        """
+
         repos_dict = {
             (repo.repo, repo.owner): repo
             for repo in repos_list
@@ -72,20 +125,16 @@ class RepositoriesService(BaseService):
             for i, item in enumerate(sorted_repos)
         ]
 
-    async def init_top_repos_on_startup(self) -> None:
-        old_repos = await self.get_top_repos_by_stars()
-        if old_repos:
-            return
-
-        current_repos = github_parser.parse_top_repos()
-        repos_to_push = self._prepare_before_pushing(current_repos)
-        values = [self._format_data(repo) for repo in repos_to_push]
-        query = self._insert_many_query(values)
-
-        await self.execute(query)
-
     @staticmethod
     def _repos_different(old_repo: repos.Repository, cur_repo: repos.RepositoryCU) -> bool:
+        """
+        Check if repositories are different.
+
+        :param old_repo: Old repository.
+        :param cur_repo: Current repository.
+        :return: True if repositories are different, False otherwise.
+        """
+
         return not all(
             (
                 old_repo.repo == cur_repo.repo.strip("'"),
@@ -102,20 +151,49 @@ class RepositoriesService(BaseService):
             )
         )
 
-    def _update_query(self, repo: repos.RepositoryCU) -> str:
-        return f"""
-            UPDATE {self.table_name} SET {(
-            ", ".join(
-                [
-                    f"{col} = {value}"
-                    for col, value in zip(repos.RepositoryCU.model_fields.keys(), repo.model_dump().values())
-                ]
-            )
-        )}
-            WHERE repo = {repo.repo} AND owner = {repo.owner}
+    async def get_top_repos_by_stars(
+            self,
+            sort: RepositorySort = None,
+            sort_desc: bool = True,
+            limit: int | None = 100
+    ) -> list[repos.Repository]:
+        """
+        Get the top repositories by stars.
+
+        :param sort: Sorting field.
+        :param sort_desc: Sort in descending order.
+        :param limit: Maximum number of repositories to retrieve.
+        :return: List of repositories.
         """
 
+        query = self._select_top_repos_query(sort, sort_desc, limit)
+
+        return [
+            repos.Repository(**item)
+            for item in await self.execute(query, fetch=True)
+        ]
+
+    async def init_top_repos_on_startup(self) -> None:
+        """
+        Initialize top repositories on startup.
+        """
+
+        old_repos = await self.get_top_repos_by_stars()
+        if old_repos:
+            return
+
+        current_repos = github_parser.parse_top_repos()
+        repos_to_push = self._prepare_before_pushing(current_repos)
+        values = [self._format_data(repo) for repo in repos_to_push]
+        query = self._insert_many_query(values)
+
+        await self.execute(query)
+
     async def update_top_repos(self) -> None:
+        """
+        Update top repositories.
+        """
+
         old_repos = await self.get_top_repos_by_stars(limit=None)
         old_repos_dict = {
             (repo.repo, repo.owner): repo
@@ -147,19 +225,25 @@ class RepositoriesService(BaseService):
             owner: str,
             create: bool = False
     ) -> tuple[repos.Repository, bool] | None:
-        query_select = f"""
-            SELECT * FROM {self.table_name}
-            WHERE repo = '{repo}' AND owner = '{owner}'
+        """
+        Get repository by repo and owner.
+
+        :param repo: Repository name.
+        :param owner: Owner name.
+        :param create: Create the repository if not exists.
+        :return: Tuple containing the repository and a boolean indicating if it was created.
         """
 
-        item = await self.execute(query_select, fetch=True)
+        query = self._select_query(repo, owner)
+
+        item = await self.execute(query, fetch=True)
         if item:
             return repos.Repository(**item[0]), False
 
         if not create:
-            return None
+            return
 
-        result = await self.execute(
+        await self.execute(
             self._insert_many_query(
                 values=[
                     self._format_data(repos.RepositoryCU(
@@ -177,7 +261,7 @@ class RepositoriesService(BaseService):
             )
         )
 
-        item = await self.execute(query_select, fetch=True)
+        item = await self.execute(query, fetch=True)
         if item:
             return repos.Repository(**item[0]), True
 

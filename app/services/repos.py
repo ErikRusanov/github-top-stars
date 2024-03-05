@@ -1,9 +1,10 @@
 import asyncio
 
+from app.core.logging_config import logger
 from app.schemas import repos
 from app.schemas.repos import RepositorySort
 from app.services.base import BaseService
-from app.utils.parsers import parse_repos_top
+from app.utils.ghp import github_parser
 
 
 class RepositoriesService(BaseService):
@@ -76,7 +77,7 @@ class RepositoriesService(BaseService):
         if old_repos:
             return
 
-        current_repos = parse_repos_top()
+        current_repos = github_parser.parse_top_repos()
         repos_to_push = self._prepare_before_pushing(current_repos)
         values = [self._format_data(repo) for repo in repos_to_push]
         query = self._insert_many_query(values)
@@ -120,7 +121,7 @@ class RepositoriesService(BaseService):
             (repo.repo, repo.owner): repo
             for repo in old_repos
         }
-        current_repos = parse_repos_top()
+        current_repos = github_parser.parse_top_repos()
         repos_to_push = self._prepare_before_pushing(old_repos + current_repos)
 
         tasks = list()
@@ -137,6 +138,8 @@ class RepositoriesService(BaseService):
                 tasks.append(self.execute(query))
 
         await asyncio.gather(*tasks)
+
+        logger.info("Updated top repositories")
 
     async def get_by_repo_and_owner(
             self,

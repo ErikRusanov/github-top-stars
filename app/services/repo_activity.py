@@ -5,7 +5,7 @@ from app.core.exceptions import DateRangeException, NoSuchRepository
 from app.schemas import repo_activity
 from app.services.base import BaseService
 from app.services.repos import RepositoriesService, repos_service
-from app.utils.parsers import parse_activity
+from app.utils.ghp import github_parser
 
 
 class RepositoryActivityService(BaseService):
@@ -78,7 +78,7 @@ class RepositoryActivityService(BaseService):
     ) -> None:
         repo_name = repo.split("/")[-1]
         rpa = defaultdict(lambda: {"commits": 0, "authors": set()})
-        for _date, author in parse_activity(repo_name, owner, latest_date):
+        for _date, author in github_parser.parse_activity(repo_name, owner, latest_date):
             rpa[_date]["commits"] += 1
             rpa[_date]["authors"].add(author)
 

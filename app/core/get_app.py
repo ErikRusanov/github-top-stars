@@ -7,6 +7,7 @@ from app.core import settings
 from app.routers import api_router
 from app.services.repo_activity import repo_activity_service
 from app.services.repos import repos_service
+from app.utils.scheduler import configure_scheduler
 from .logging_config import logger
 
 
@@ -45,4 +46,8 @@ def get_application() -> FastAPI:
         )
 
     _app.include_router(api_router)
+
+    scheduler = configure_scheduler()
+    scheduler.start()
+
     return _app

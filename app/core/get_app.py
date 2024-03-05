@@ -5,7 +5,8 @@ from starlette.responses import JSONResponse
 
 from app.core import settings
 from app.routers import api_router
-from app.services import repos_service, repo_activity_service
+from app.services.repo_activity import repo_activity_service
+from app.services.repos import repos_service
 from .logging_config import logger
 
 

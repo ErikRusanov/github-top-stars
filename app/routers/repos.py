@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from starlette import status
 
 from app.schemas import repos
-from app.services import repos_service
+from app.services.repos import repos_service
 
 repos_router = APIRouter(
     prefix="/repos",
@@ -20,10 +20,3 @@ async def get_top_repos(
         sort_desc: bool = True,
 ):
     return await repos_service.get_top_repos_by_stars(sort, sort_desc)
-
-
-@repos_router.get(
-    path="/tmp"
-)
-async def update_top_repos():
-    await repos_service.update_top_repos()

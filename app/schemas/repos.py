@@ -16,16 +16,17 @@ class RepositorySort(Enum):
 
 
 class _RepositoryBase(BaseModel):
-    position_cur: int
-    position_prev: int | None
-    stars: int
-    watchers: int
-    forks: int
-    open_issues: int
-    language: str | None
+    position_cur: int | None = None
+    position_prev: int | None = None
+    stars: int | None = None
+    watchers: int | None = None
+    forks: int | None = None
+    open_issues: int | None = None
+    language: str | None = None
 
 
 class Repository(_RepositoryBase):
+    id: int | None = None
     repo: str
     owner: str
 

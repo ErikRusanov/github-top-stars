@@ -5,8 +5,9 @@ from fastapi import APIRouter, Query
 from starlette import status
 from starlette.responses import JSONResponse
 
+from app.core.exceptions import DateRangeException, NoSuchRepository
 from app.schemas import repo_activity
-from app.services import repo_activity_service
+from app.services.repo_activity import repo_activity_service
 
 repo_activity_router = APIRouter(
     prefix="/repo",
@@ -32,5 +33,11 @@ async def get_activity(
             since=since,
             until=until
         )
-    except ValueError:
-        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content="Max date range is 1 year")
+    except DateRangeException:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content="The commit history is only available for the last year. Max date range is 1 year"
+        )
+
+    except NoSuchRepository:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content="Can't find such repository")

@@ -11,5 +11,8 @@ class Settings(BaseSettings):
     # ------------- DB ----------------------------------------------
     PSQL_URL: PostgresDsn
 
+    # ------------- GITHUB JWT --------------------------------------
+    TOKEN: str
+
 
 settings = Settings()

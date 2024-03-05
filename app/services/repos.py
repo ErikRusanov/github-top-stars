@@ -8,18 +8,19 @@ from app.utils.parsers import parse_repos_top
 
 class RepositoriesService(BaseService):
     table_name = "repositories"
+    schemaCU = repos.RepositoryCU
     _initial_query = f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id SERIAL PRIMARY KEY,
             repo VARCHAR NOT NULL,
             owner VARCHAR NOT NULL,
-            position_cur INTEGER NOT NULL,
+            position_cur INTEGER DEFAULT null,
             position_prev INTEGER DEFAULT null,
-            stars INTEGER NOT NULL,          
-            watchers INTEGER NOT NULL,
-            forks INTEGER NOT NULL,           
-            open_issues INTEGER NOT NULL,
-            language VARCHAR,
+            stars INTEGER DEFAULT null,          
+            watchers INTEGER DEFAULT null,
+            forks INTEGER DEFAULT null,           
+            open_issues INTEGER DEFAULT null,
+            language VARCHAR DEFAULT null,
             UNIQUE (owner, repo)
         );
         CREATE INDEX IF NOT EXISTS idx_{table_name}_owner_repo ON {table_name} (owner, repo);
@@ -36,9 +37,10 @@ class RepositoriesService(BaseService):
         query = f"""
             SELECT * FROM (
                 SELECT * FROM {self.table_name}
+                WHERE position_cur IS NOT null AND stars IS NOT null
                 ORDER BY {RepositorySort.stars.value} DESC
                 {limit_cond}
-            )
+            ) AS T
             ORDER BY {order_by};
         """
 
@@ -46,18 +48,6 @@ class RepositoriesService(BaseService):
             repos.Repository(**item)
             for item in await self.execute(query, fetch=True)
         ]
-
-    @staticmethod
-    def _columns() -> str:
-        return ", ".join(repos.RepositoryCU.model_fields.keys())
-
-    def _insert_many_query(self, values: list[str], columns: str = None) -> str:
-        columns = columns or self._columns()
-        return f"INSERT INTO {self.table_name} ({columns}) VALUES {', '.join(values)}"
-
-    @staticmethod
-    def _format_repo(repo: repos.RepositoryCU) -> str:
-        return "({})".format(", ".join(repo.model_dump().values()))
 
     @staticmethod
     def _prepare_before_pushing(repos_list: list[repos.Repository]) -> list[repos.RepositoryCU]:
@@ -88,7 +78,7 @@ class RepositoriesService(BaseService):
 
         current_repos = parse_repos_top()
         repos_to_push = self._prepare_before_pushing(current_repos)
-        values = [self._format_repo(repo) for repo in repos_to_push]
+        values = [self._format_data(repo) for repo in repos_to_push]
         query = self._insert_many_query(values)
 
         await self.execute(query)
@@ -141,9 +131,52 @@ class RepositoriesService(BaseService):
             if old_repo:
                 query = self._update_query(cur_repo) if self._repos_different(old_repo, cur_repo) else None
             else:
-                query = self._insert_many_query([self._format_repo(cur_repo)], columns)
+                query = self._insert_many_query([self._format_data(cur_repo)], columns)
 
             if query:
                 tasks.append(self.execute(query))
 
         await asyncio.gather(*tasks)
+
+    async def get_by_repo_and_owner(
+            self,
+            repo: str,
+            owner: str,
+            create: bool = False
+    ) -> tuple[repos.Repository, bool] | None:
+        query_select = f"""
+            SELECT * FROM {self.table_name}
+            WHERE repo = '{repo}' AND owner = '{owner}'
+        """
+
+        item = await self.execute(query_select, fetch=True)
+        if item:
+            return repos.Repository(**item[0]), False
+
+        if not create:
+            return None
+
+        result = await self.execute(
+            self._insert_many_query(
+                values=[
+                    self._format_data(repos.RepositoryCU(
+                        position_cur="null",
+                        position_prev="null",
+                        stars="null",
+                        watchers="null",
+                        forks="null",
+                        open_issues="null",
+                        language="null",
+                        repo=f"'{repo}'",
+                        owner=f"'{owner}'",
+                    ))
+                ]
+            )
+        )
+
+        item = await self.execute(query_select, fetch=True)
+        if item:
+            return repos.Repository(**item[0]), True
+
+
+repos_service = RepositoriesService()

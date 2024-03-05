@@ -13,6 +13,7 @@ class RepoActivity(_RepoActivityBase):
 
 
 class RepoActivityCU(BaseModel):
-    date: str
     commits: str
     authors: str
+    date: str
+    repository_id: str

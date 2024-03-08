@@ -82,7 +82,7 @@ class RepositoryActivityService(BaseService):
             owner: str,
             repo: str,
             repo_id: int,
-            latest_date: date
+            latest_date: date | None
     ) -> list[repo_activity.RepoActivityCU]:
         """
         Prepare repository activity data before pushing to the database.
@@ -98,10 +98,9 @@ class RepositoryActivityService(BaseService):
         repo_activities = defaultdict(lambda: {"commits": 0, "authors": set()})
         data = send_request_to_yandex_cloud_function(
             data={
-                "owner": owner,
-                "repo_name": repo_name,
-                "latest_date": latest_date
-            },
+                     "owner": owner,
+                     "repo_name": repo_name,
+                 } | ({"latest_date": str(latest_date)} if latest_date else {}),
             params={
                 "action": "parse_activity"
             }

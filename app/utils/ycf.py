@@ -13,7 +13,6 @@ def send_request_to_yandex_cloud_function(data: dict = None, params: dict = None
             json=data or {},
             params=params or {}
         )
-
         return resp.json()
     except RequestException as e:
         logger.error(f"Can't parse data from {url}. Error: {e}")

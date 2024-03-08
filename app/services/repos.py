@@ -179,7 +179,7 @@ class RepositoriesService(BaseService):
         Initialize top repositories on startup.
         """
 
-        if settings.YCF_URL is not None:
+        if settings.YCF_URL:
             return
 
         old_repos = await self.get_top_repos_by_stars()
@@ -187,6 +187,7 @@ class RepositoriesService(BaseService):
             return
 
         current_repos = github_parser.parse_top_repos()
+
         repos_to_push = self._prepare_before_pushing(current_repos)
         values = [self._format_data(repo) for repo in repos_to_push]
         query = self._insert_many_query(values)

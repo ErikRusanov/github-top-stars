@@ -1,6 +1,5 @@
 import re
 from datetime import datetime, date
-from typing import Any
 
 import requests
 from requests import RequestException
@@ -74,18 +73,14 @@ class GHParser:
         _format = "%Y-%m-%dT%H:%M:%SZ"
         return datetime.strptime(date_string, _format).date()
 
-    def _next_url(self, data: Any, link: str, latest_date: date) -> str | None:
+    @staticmethod
+    def _next_url(link: str) -> str | None:
         """
         Determines the next URL for paginated responses based on the provided data and link.
 
-        :param data: The data received from the GitHub API response.
         :param link: The link header from the GitHub API response.
-        :param latest_date: The latest date to retrieve activity from.
         :return: The next URL if conditions are met, otherwise None.
         """
-
-        if latest_date and self.convert_date(data[0].get("timestamp")) <= latest_date:
-            return
 
         if link is None or 'rel="next"' not in link:
             return
@@ -114,9 +109,13 @@ class GHParser:
 
             if not isinstance(data, list):
                 break
+
+            if latest_date and self.convert_date(data[0].get("timestamp")) <= latest_date:
+                break
+
             items.extend(data)
 
-            if (url := self._next_url(data, link, latest_date)) is None:
+            if (url := self._next_url(link)) is None:
                 break
 
         return [

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7fbe16cd-505d-4cb2-a4b4-8c663541a80f" name="Changes" comment="Added latest_date None checking">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.template" beforeDir="false" afterPath="$PROJECT_DIR$/.env.template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/get_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/get_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/repo_activity.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/repo_activity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/repos.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/repos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/ghp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/ghp.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2dAUaUhia2Gi8tDuAjzgTliyrGK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "fix-bugs",
+    "last_opened_file_path": "/home/erik/Programming/other/github-top-stars",
+    "settings.editor.selected.configurable": "actions.on.save"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/core" />
+      <recent name="$PROJECT_DIR$/app/utils" />
+      <recent name="$PROJECT_DIR$/app/models" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-d68999036c7f-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.14475.56" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7fbe16cd-505d-4cb2-a4b4-8c663541a80f" name="Changes" comment="" />
+      <created>1709450439980</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709450439980</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added settings configuration">
+      <option name="closed" value="true" />
+      <created>1709453108212</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1709453108212</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Function to get app">
+      <option name="closed" value="true" />
+      <created>1709453529710</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1709453529710</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Docker settings added">
+      <option name="closed" value="true" />
+      <created>1709454542186</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1709454542186</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added connection to psql">
+      <option name="closed" value="true" />
+      <created>1709455085746</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1709455085746</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Tables creation added">
+      <option name="closed" value="true" />
+      <created>1709462581963</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1709462581963</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Repositories router and fetching top 100 added">
+      <option name="closed" value="true" />
+      <created>1709465415512</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1709465415512</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Repository activity router and fetching stats to repo added">
+      <option name="closed" value="true" />
+      <created>1709466440653</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1709466440653</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Moved logger to core">
+      <option name="closed" value="true" />
+      <created>1709466747075</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1709466747075</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Beautified code">
+      <option name="closed" value="true" />
+      <created>1709467174119</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1709467174119</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Exception handler modified">
+      <option name="closed" value="true" />
+      <created>1709467444761</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1709467444761</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Beautified code">
+      <option name="closed" value="true" />
+      <created>1709467468128</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1709467468128</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Temporary parser modifications">
+      <option name="closed" value="true" />
+      <created>1709497377849</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1709497377849</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Removed jwt token generation for github API">
+      <option name="closed" value="true" />
+      <created>1709622891019</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1709622891019</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added activity parser, changed repos table, modified config">
+      <option name="closed" value="true" />
+      <created>1709639112176</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1709639112176</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added auto-parsing">
+      <option name="closed" value="true" />
+      <created>1709639556581</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1709639556581</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added auto-parsing">
+      <option name="closed" value="true" />
+      <created>1709639581197</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1709639581197</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Parsing rate limit exception">
+      <option name="closed" value="true" />
+      <created>1709640107925</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1709640107925</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Parsing rate limit exception">
+      <option name="closed" value="true" />
+      <created>1709640120096</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1709640120096</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Beautified code">
+      <option name="closed" value="true" />
+      <created>1709640467538</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1709640467538</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Changed interval to 1-minute">
+      <option name="closed" value="true" />
+      <created>1709640678167</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1709640678167</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709642047675</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1709642047675</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709642415178</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1709642415178</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709642502180</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1709642502180</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709642814001</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1709642814001</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Beautified code, added docs. Fixed parser">
+      <option name="closed" value="true" />
+      <created>1709643439485</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1709643439485</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709643620461</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1709643620461</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709646347244</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1709646347244</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Beautified code, added docs">
+      <option name="closed" value="true" />
+      <created>1709647278499</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1709647278499</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Added README.md and modified port to database">
+      <option name="closed" value="true" />
+      <created>1709647866889</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1709647866889</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Added README.md and modified port to database">
+      <option name="closed" value="true" />
+      <created>1709647921871</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1709647921871</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Added README.md and modified port to database">
+      <option name="closed" value="true" />
+      <created>1709648014564</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1709648014564</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added README.md and modified port to database">
+      <option name="closed" value="true" />
+      <created>1709648105656</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1709648105656</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added README.md and modified port to database">
+      <option name="closed" value="true" />
+      <created>1709648588347</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1709648588347</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Refactored psql url">
+      <option name="closed" value="true" />
+      <created>1709672096153</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1709672096153</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added latest_date None checking">
+      <option name="closed" value="true" />
+      <created>1709672338420</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1709672338420</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added settings configuration" />
+    <MESSAGE value="Function to get app" />
+    <MESSAGE value="Docker settings added" />
+    <MESSAGE value="Added connection to psql" />
+    <MESSAGE value="Tables creation added" />
+    <MESSAGE value="Repositories router and fetching top 100 added" />
+    <MESSAGE value="Repository activity router and fetching stats to repo added" />
+    <MESSAGE value="Moved logger to core" />
+    <MESSAGE value="Exception handler modified" />
+    <MESSAGE value="Temporary parser modifications" />
+    <MESSAGE value="Removed jwt token generation for github API" />
+    <MESSAGE value="Added activity parser, changed repos table, modified config" />
+    <MESSAGE value="Added auto-parsing" />
+    <MESSAGE value="Parsing rate limit exception" />
+    <MESSAGE value="Beautified code" />
+    <MESSAGE value="Changed interval to 1-minute" />
+    <MESSAGE value="Beautified code, added docs. Fixed parser" />
+    <MESSAGE value="Beautified code, added docs" />
+    <MESSAGE value="Added README.md and modified port to database" />
+    <MESSAGE value="Refactored psql url" />
+    <MESSAGE value="Added latest_date None checking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added latest_date None checking" />
+  </component>
+</project>

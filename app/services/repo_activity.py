@@ -1,11 +1,13 @@
 from collections import defaultdict
 from datetime import date, datetime
 
+from app.core import settings
 from app.core.exceptions import DateRangeException, NoSuchRepository
 from app.schemas import repo_activity, repos
 from app.services.base import BaseService
 from app.services.repos import RepositoriesService, repos_service
 from app.utils.ghp import github_parser
+from app.utils.ycf import send_request_to_yandex_cloud_function
 
 
 class RepositoryActivityService(BaseService):
@@ -91,17 +93,28 @@ class RepositoryActivityService(BaseService):
         :param latest_date: Latest date for the repository.
         :return: List of prepared repository activities.
         """
-
         repo_name = repo.split("/")[-1]
 
         repo_activities = defaultdict(lambda: {"commits": 0, "authors": set()})
-        for _date, author in github_parser.parse_activity(repo_name, owner, latest_date):
-            repo_activities[_date]["commits"] += 1
-            repo_activities[_date]["authors"].add(author)
+        data = send_request_to_yandex_cloud_function(
+            data={
+                "owner": owner,
+                "repo_name": repo_name,
+                "latest_date": latest_date
+            },
+            params={
+                "action": "parse_activity"
+            }
+        ) if settings.YCF_URL else github_parser.parse_activity(repo_name, owner, latest_date)
+
+        for _date, author in data:
+            key = str(github_parser.convert_date(_date))
+            repo_activities[key]["commits"] += 1
+            repo_activities[key]["authors"].add(author)
 
         return [
             repo_activity.RepoActivityCU(
-                date=f"'{str(_date)}'",
+                date=f"'{_date}'",
                 commits="'{}'".format(data.get("commits")),
                 authors="ARRAY['{}']".format("', '".join(data["authors"])),
                 repository_id=f"'{repo_id}'"
@@ -176,7 +189,6 @@ class RepositoryActivityService(BaseService):
         :param repo_id: Repository ID.
         :param latest_date: Latest date for updating activity data.
         """
-
         if repo_activities := self._prepare_before_pushing(owner, repo, repo_id, latest_date):
             await self.execute(
                 self._insert_many_query(

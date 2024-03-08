@@ -1,5 +1,6 @@
 import asyncio
 
+from app.core import settings
 from app.core.logging_config import logger
 from app.schemas import repos
 from app.schemas.repos import RepositorySort
@@ -177,6 +178,9 @@ class RepositoriesService(BaseService):
         """
         Initialize top repositories on startup.
         """
+
+        if settings.YCF_URL is not None:
+            return
 
         old_repos = await self.get_top_repos_by_stars()
         if old_repos:

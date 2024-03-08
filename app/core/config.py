@@ -11,8 +11,13 @@ class Settings(BaseSettings):
     # ------------- DB ----------------------------------------------
     PSQL_URL: PostgresDsn
 
-    # ------------- GITHUB JWT --------------------------------------
-    TOKEN: str
+    # ------------- OTHER -------------------------------------------
+    YCF_URL: str | None = None
+    TOKEN: str | None = None
+
+    def __init__(self):
+        super().__init__()
+        assert not (self.YCF_URL is None and self.TOKEN is None), "One of the parameters is required: YCF_URL or TOKEN"
 
 
 settings = Settings()

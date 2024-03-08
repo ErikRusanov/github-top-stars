@@ -56,23 +56,23 @@ class GHParser:
             if isinstance(data, dict) and "API rate limit exceeded" in data.get("msg", ""):
                 raise RateLimitExceeded
 
-            return resp.json(), resp.headers.get("Link", None)
+            return data, resp.headers.get("Link", None)
         except RequestException as e:
             logger.error(f"Can't parse data from {url}. Error: {e}")
 
         return dict(), None
 
     @staticmethod
-    def _convert_date(item: dict) -> date:
+    def convert_date(date_string: str = None) -> date:
         """
         Converts the timestamp from the GitHub API response to a date object.
 
-        :param item: The GitHub API response item.
+        :param date_string: Date string to convert
         :return: Date object extracted from the timestamp.
         """
 
         _format = "%Y-%m-%dT%H:%M:%SZ"
-        return datetime.strptime(item.get("timestamp"), _format).date()
+        return datetime.strptime(date_string, _format).date()
 
     def _next_url(self, data: Any, link: str, latest_date: date) -> str | None:
         """
@@ -84,7 +84,7 @@ class GHParser:
         :return: The next URL if conditions are met, otherwise None.
         """
 
-        if latest_date and self._convert_date(data[0]) <= latest_date:
+        if latest_date and self.convert_date(data[0].get("timestamp")) <= latest_date:
             return
 
         if link is None or 'rel="next"' not in link:
@@ -120,7 +120,7 @@ class GHParser:
                 break
 
         return [
-            (self._convert_date(item), item.get("actor").get("login"))
+            (item.get("timestamp"), item.get("actor").get("login"))
             for item in items
         ]
 

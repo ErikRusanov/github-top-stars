@@ -51,6 +51,9 @@ class BaseService(ABC):
         except Exception as e:
             logger.error(f"Can't execute query:\n{query}\n\nError: {e}")
 
+    async def close_connection(self) -> None:
+        await self._pool.close()
+
     async def create_table(self) -> None:
         """
         Creates a table in the database using the initial query provided in the service.

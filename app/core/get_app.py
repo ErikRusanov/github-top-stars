@@ -44,6 +44,15 @@ def get_application() -> FastAPI:
         logger.info("Database is ready for use")
         await repos_service.init_top_repos_on_startup()
 
+    @_app.on_event("shutdown")
+    async def shutdown():
+        services = [
+            repos_service,
+            repo_activity_service
+        ]
+        for service in services:
+            await service.close_connection()
+
     @_app.exception_handler(Exception)
     def _app_exception_handler(request: Request, e: Exception) -> JSONResponse:
         """

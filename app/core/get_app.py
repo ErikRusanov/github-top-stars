@@ -6,9 +6,9 @@ from app.core import settings
 from app.routers import api_router
 from app.services.repo_activity import repo_activity_service
 from app.services.repos import repos_service
-from app.utils.scheduler import configure_scheduler
 from .exceptions import handle_exception
 from .logging_config import logger
+from ..utils.scheduler import configure_scheduler
 
 
 def get_application() -> FastAPI:
@@ -44,6 +44,15 @@ def get_application() -> FastAPI:
         logger.info("Database is ready for use")
         await repos_service.init_top_repos_on_startup()
 
+    @_app.on_event("shutdown")
+    async def shutdown():
+        services = [
+            repos_service,
+            repo_activity_service
+        ]
+        for service in services:
+            await service.close_connection()
+
     @_app.exception_handler(Exception)
     def _app_exception_handler(request: Request, e: Exception) -> JSONResponse:
         """
@@ -58,7 +67,8 @@ def get_application() -> FastAPI:
 
     _app.include_router(api_router)
 
-    scheduler = configure_scheduler()
-    scheduler.start()
+    if settings.YCF_URL is None:
+        scheduler = configure_scheduler()
+        scheduler.start()
 
     return _app
